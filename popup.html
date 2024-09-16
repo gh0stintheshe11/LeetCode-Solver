@@ -8,26 +8,33 @@
         body {
             font-family: Arial, sans-serif;
             width: 400px;
-            height: 500px;
-            padding: 20px;
-            background-color: #1e1e1e; /* Dark background */
-            color: #ffffff; /* Light text color */
+            padding: 10px;
+            background-color: #1e1e1e;
+            color: #ffffff;
         }
         h1 {
-            color: #ffffff; /* Light color for heading */
+            color: #ffffff;
             text-align: center;
         }
-        #solve-btn {
-            display: block;
-            width: 100%;
+        #api-key-input, #solve-btn {
+            width: 100%; /* Change to 100% */
+            box-sizing: border-box; /* Add this */
             padding: 10px;
+            margin-bottom: 10px;
+            border-radius: 5px;
+            font-size: 16px;
+        }
+        #api-key-input {
+            background-color: #2c2c2c;
+            color: #ffffff;
+            border: 1px solid #444;
+        }
+        #solve-btn {
             background-color: #4CAF50;
             color: white;
             border: none;
-            border-radius: 5px;
-            font-size: 16px;
             cursor: pointer;
-            margin-bottom: 20px;
+            display: block; /* Ensures the button takes full width */
         }
         #solve-btn:hover {
             background-color: #45a049;
@@ -37,40 +44,21 @@
             cursor: not-allowed;
         }
         #solution-display {
-            background-color: #2c2c2c; /* Darker shade for solution display */
+            background-color: #2c2c2c;
             border: 1px solid #444;
             border-radius: 5px;
-            padding: 20px;
-            max-height: 400px;
-            min-height: 400px;
-            width: 95%;
-            margin: 0 auto;
-            overflow-y: auto;
-        }
-        .markdown-body {
-            font-size: 16px;
-            color: #e0e0e0; /* Light grey for better readability */
-        }
-        #code-section {
-            position: relative;
-            margin-top: 20px;
-        }
-        #code-display {
-            background-color: #2c2c2c; /* Dark background for code */
-            border: 1px solid #444;
-            border-radius: 6px;
-            padding: 16px;
-            overflow-x: auto;
-            font-family: monospace;
+            padding: 10px;
+            margin-top: 10px;
             white-space: pre-wrap;
             word-wrap: break-word;
-            color: #e0e0e0; /* Light grey for code text */
+            font-size: 16px;
+            max-height: 300px;
+            overflow-y: auto;
         }
         #copy-btn {
-            position: absolute;
-            top: 8px;
-            right: 8px;
-            padding: 6px 12px;
+            display: none;
+            margin-top: 10px;
+            padding: 5px 10px;
             background-color: #0366d6;
             color: white;
             border: none;
@@ -82,22 +70,13 @@
         }
     </style>
     <script src="marked.min.js"></script>
-    <link rel="stylesheet" href="github-markdown.css">
 </head>
 <body>
     <h1>LeetCode Solver</h1>
+    <input type="password" id="api-key-input" placeholder="Enter your OpenAI API key">
     <button id="solve-btn">Solve Problem</button>
-    <div id="solution-display" class="markdown-body"></div>
-    <div id="code-section">
-        <pre id="code-display"></pre>
-        <button id="copy-btn">Copy Code</button>
-    </div>
-    <div>
-        <label for="api-key">OpenAI API Key:</label>
-        <input type="password" id="api-key" placeholder="Enter your OpenAI API key">
-        <button id="save-api-key">Save API Key</button>
-    </div>
-
+    <div id="solution-display" style="display: none;"></div>
+    <button id="copy-btn">Copy Code</button>
     <script src="popup.js"></script>
 </body>
 </html>

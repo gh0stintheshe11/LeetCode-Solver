@@ -1,10 +1,29 @@
-const openai_api_key = "";
-
 document.addEventListener('DOMContentLoaded', function () {
     const solveBtn = document.getElementById('solve-btn');
+    const apiKeyInput = document.getElementById('api-key-input');
+    const solutionDisplay = document.getElementById('solution-display');
+    const copyBtn = document.getElementById('copy-btn');
 
-    if (solveBtn) {
+    // Load saved API key if it exists
+    chrome.storage.sync.get(['openai_api_key'], function(result) {
+        if (result.openai_api_key) {
+            apiKeyInput.value = result.openai_api_key;
+        }
+    });
+
+    if (solveBtn && apiKeyInput) {
         solveBtn.addEventListener('click', async () => {
+            const openai_api_key = apiKeyInput.value.trim();
+
+            if (!openai_api_key) {
+                alert('Please enter your OpenAI API key.');
+                return;
+            }
+
+            // Save the API key
+            chrome.storage.sync.set({ openai_api_key: openai_api_key }, function() {
+                console.log('API key saved');
+            });
 
             const [tab] = await chrome.tabs.query({ active: true, currentWindow: true });
 
@@ -68,7 +87,7 @@ document.addEventListener('DOMContentLoaded', function () {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
-                        'Authorization': `Bearer ${openai_api_key}`
+                        'Authorization': `Bearer ${openai_api_key}` // Use the API key from input
                     },
                     body: JSON.stringify({
                         model: 'gpt-4o',
@@ -118,41 +137,48 @@ document.addEventListener('DOMContentLoaded', function () {
             }
         });
     } else {
-        console.error('Solve button not found.');
+        console.error('Solve button or API key input not found.');
+    }
+
+    if (copyBtn) {
+        copyBtn.addEventListener('click', () => {
+            const codeBlocks = extractCodeBlocks(solutionDisplay.innerHTML);
+            if (codeBlocks.length > 0) {
+                const codeText = codeBlocks.join('\n\n');
+                navigator.clipboard.writeText(codeText).then(() => {
+                    // Visual feedback without alert
+                    const originalText = copyBtn.textContent;
+                    copyBtn.textContent = 'Copied!';
+                    copyBtn.style.backgroundColor = '#45a049';
+                    setTimeout(() => {
+                        copyBtn.textContent = originalText;
+                        copyBtn.style.backgroundColor = '';
+                    }, 2000);
+                }).catch(err => {
+                    console.error('Failed to copy code: ', err);
+                });
+            } else {
+                console.log('No code found to copy.');
+            }
+        });
     }
 });
 
 function displaySolution(solution) {
     const solutionDisplay = document.getElementById('solution-display');
-    const codeDisplay = document.getElementById('code-display');
     const copyBtn = document.getElementById('copy-btn');
-    const codeSection = document.getElementById('code-section');
-
-    if (typeof marked !== 'undefined') {
+    if (solutionDisplay) {
         solutionDisplay.innerHTML = marked.parse(solution);
-        
-        // Extract code from the markdown
-        const codeMatch = solution.match(/```[\s\S]*?```/);
-        if (codeMatch) {
-            let code = codeMatch[0].replace(/```[\s\S]*?\n/, '').replace(/```$/, '').trim();
-            codeDisplay.textContent = code;
-            codeSection.style.display = 'block';
-            
-            // Set up copy button
-            copyBtn.onclick = () => {
-                navigator.clipboard.writeText(code).then(() => {
-                    copyBtn.textContent = 'Copied!';
-                    setTimeout(() => {
-                        copyBtn.textContent = 'Copy Code';
-                    }, 2000);
-                });
-            };
-        } else {
-            codeSection.style.display = 'none';
+        solutionDisplay.style.display = 'block';
+        if (copyBtn) {
+            copyBtn.style.display = 'block';
         }
-    } else {
-        console.error('Marked library not loaded');
-        solutionDisplay.textContent = solution;
-        codeSection.style.display = 'none';
     }
+}
+
+function extractCodeBlocks(html) {
+    const parser = new DOMParser();
+    const doc = parser.parseFromString(html, 'text/html');
+    const codeElements = doc.querySelectorAll('pre code');
+    return Array.from(codeElements).map(el => el.textContent);
 }
