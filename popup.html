@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LeetCode Solver</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            width: 400px;
+            height: 500px;
+            padding: 20px;
+            background-color: #1e1e1e; /* Dark background */
+            color: #ffffff; /* Light text color */
+        }
+        h1 {
+            color: #ffffff; /* Light color for heading */
+            text-align: center;
+        }
+        #solve-btn {
+            display: block;
+            width: 100%;
+            padding: 10px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            font-size: 16px;
+            cursor: pointer;
+            margin-bottom: 20px;
+        }
+        #solve-btn:hover {
+            background-color: #45a049;
+        }
+        #solve-btn:disabled {
+            background-color: #2c2c2c;
+            cursor: not-allowed;
+        }
+        #solution-display {
+            background-color: #2c2c2c; /* Darker shade for solution display */
+            border: 1px solid #444;
+            border-radius: 5px;
+            padding: 20px;
+            max-height: 400px;
+            min-height: 400px;
+            width: 95%;
+            margin: 0 auto;
+            overflow-y: auto;
+        }
+        .markdown-body {
+            font-size: 16px;
+            color: #e0e0e0; /* Light grey for better readability */
+        }
+        #code-section {
+            position: relative;
+            margin-top: 20px;
+        }
+        #code-display {
+            background-color: #2c2c2c; /* Dark background for code */
+            border: 1px solid #444;
+            border-radius: 6px;
+            padding: 16px;
+            overflow-x: auto;
+            font-family: monospace;
+            white-space: pre-wrap;
+            word-wrap: break-word;
+            color: #e0e0e0; /* Light grey for code text */
+        }
+        #copy-btn {
+            position: absolute;
+            top: 8px;
+            right: 8px;
+            padding: 6px 12px;
+            background-color: #0366d6;
+            color: white;
+            border: none;
+            border-radius: 3px;
+            cursor: pointer;
+        }
+        #copy-btn:hover {
+            background-color: #0056b3;
+        }
+    </style>
+    <script src="marked.min.js"></script>
+    <link rel="stylesheet" href="github-markdown.css">
+</head>
+<body>
+    <h1>LeetCode Solver</h1>
+    <button id="solve-btn">Solve Problem</button>
+    <div id="solution-display" class="markdown-body"></div>
+    <div id="code-section">
+        <pre id="code-display"></pre>
+        <button id="copy-btn">Copy Code</button>
+    </div>
+    <div>
+        <label for="api-key">OpenAI API Key:</label>
+        <input type="password" id="api-key" placeholder="Enter your OpenAI API key">
+        <button id="save-api-key">Save API Key</button>
+    </div>
+
+    <script src="popup.js"></script>
+</body>
+</html>
