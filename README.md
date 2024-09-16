@@ -39,10 +39,6 @@ To use LeetCode-Solver, you need to provide an API key for the AI service. This 
 
 Contributions are welcome! Please feel free to submit a Pull Request.
 
-## License
-
-[MIT License](LICENSE)
-
 ## Disclaimer
 
 This tool is meant for learning and practice purposes only. Please adhere to LeetCode's terms of service and academic integrity guidelines when using this extension.
